@@ -9,12 +9,29 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Hi Hang Tu' });
 });
 
-
-router.get('/getAll', function (req, res, next) {
+router.get('/get', function (req, res, next) {
   var collection = db.get().collection('debts');
-  collection.find().toArray(function (err, data) {
+  collection.find(myquery).toArray(function (err, data) {
     res.send(JSON.stringify(data));
   });
+});
+
+router.get('/findOne', function (req, res, next) {
+  var collection = db.get().collection('debts');
+  var myquery = { title: "deudas" };
+  collection.find(myquery).toArray(function (err, data) {
+    res.send(JSON.stringify(data));
+  });
+});
+
+router.get('/update', function (req, res, next) {
+  var myquery = { title: "deudas" };
+  var newvalues = { $set: {data: [] }};
+  console.log(req.body);
+  /*db.get().collection("debts").updateOne(myquery, newvalues, function(err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+  });*/
 });
 
 /*router.get('/getAll', function (req, res, next) {
