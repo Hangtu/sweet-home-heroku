@@ -9,12 +9,24 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Hi Hang Tu' });
 });
 
+router.post('/login', function (req, res) {
+   user = req.body.user;
+   pass = req.body.password;
+   if(user === 'hangtu' && pass === '1234'){
+    res.json({token:"1234"})
+   }
+
+   res.send(401)  
+})
+
 router.get('/get', function (req, res, next) {
   var collection = db.get().collection('debts');
   collection.find(myquery).toArray(function (err, data) {
     res.send(JSON.stringify(data));
   });
 });
+
+
 
 router.get('/findOne', function (req, res, next) {
   var collection = db.get().collection('debts');
