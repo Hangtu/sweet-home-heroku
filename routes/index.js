@@ -42,7 +42,7 @@ router.post('/update', function (req, res, next) {
     console.log("1 document updated");
   });
 
-  res.send('updated!');
+  res.json({status:"ok"})
 
 });
 
