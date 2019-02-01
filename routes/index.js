@@ -6,7 +6,7 @@ var db = require('../db')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Hi Hang Tu' });
+  res.render('index', { title: 'Server is running' });
 });
 
 router.post('/login', function (req, res) {
@@ -17,7 +17,7 @@ router.post('/login', function (req, res) {
    }
 
    res.send(401)  
-})
+});
 
 router.get('/get', function (req, res, next) {
   var collection = db.get().collection('debts');
@@ -25,8 +25,6 @@ router.get('/get', function (req, res, next) {
     res.send(JSON.stringify(data));
   });
 });
-
-
 
 router.get('/findOne', function (req, res, next) {
   var collection = db.get().collection('debts');
@@ -36,14 +34,16 @@ router.get('/findOne', function (req, res, next) {
   });
 });
 
-router.get('/update', function (req, res, next) {
+router.post('/update', function (req, res, next) {
   var myquery = { title: "deudas" };
-  var newvalues = { $set: {data: [] }};
-  console.log(req.body);
-  /*db.get().collection("debts").updateOne(myquery, newvalues, function(err, res) {
+  var newvalues =  { $set: { "data.deudas" : req.body }};
+   db.get().collection("debts").updateOne(myquery, newvalues, function(err, res) {
     if (err) throw err;
     console.log("1 document updated");
-  });*/
+  });
+
+  res.send(200,'updated!');
+
 });
 
 /*router.get('/getAll', function (req, res, next) {
