@@ -10,13 +10,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', function (req, res) {
-   user = req.body.user;
-   pass = req.body.password;
-   if(user === 'hangtu' && pass === '1234'){
-    res.json({token:"1234"})
-   }
+  user = req.body.user;
+  pass = req.body.password;
+  if (user === 'hangtu' && pass === '1234') {
+    res.json({ token: "1234" })
+  }
 
-   res.send(401)  
+  res.send(401)
 });
 
 router.get('/get', function (req, res, next) {
@@ -36,36 +36,34 @@ router.get('/findOne', function (req, res, next) {
 
 router.post('/update', function (req, res, next) {
   var myquery = { title: "deudas" };
-  var newvalues =  { $set: { "data.deudas" : req.body }};
-   db.get().collection("debts").updateOne(myquery, newvalues, function(err, res) {
+  var newvalues = { $set: { "data.deudas": req.body } };
+  db.get().collection("debts").updateOne(myquery, newvalues, function (err, res) {
     if (err) throw err;
     console.log("1 document updated");
   });
-  res.json({status:"ok"})
+  res.json({ status: "ok" })
 });
 
 router.post('/save', function (req, res, next) {
- var myquery = { title: "deudas" };
- var obj = {
-  nombre : req.body.nombre,
-  deuda : req.body.deuda,
-  pagoMinimo : req.body.pago_min,
-  diaLimite : req.body.limit_day,
-  tipo : "deuda",
-  pagado : "no"
- };
- var newvalues = { $push: {"data.deudas": { 
-  nombre : req.body.nombre,
-  deuda : req.body.deuda,
-  pagoMinimo : req.body.pago_min,
-  diaLimite : req.body.limit_day,
-  tipo : "deuda",
-  pagado : "no" } } }
- db.get().collection('debts').update(myquery,newvalues,function(err, resp) {
-  if (err) throw err;
-  console.log("1 document updated");
-  res.json({status:"ok", item: obj});
- });
+  var myquery = { title: "deudas" };
+  var obj = {
+    nombre: req.body.nombre,
+    deuda: req.body.deuda,
+    pagoMinimo: req.body.pago_min,
+    diaLimite: req.body.limit_day,
+    tipo: "deuda",
+    pagado: "no"
+  };
+  var newvalues = {
+    $push: {
+      "data.deudas": obj
+    }
+  }
+  db.get().collection('debts').updateOne(myquery, newvalues, function (err, resp) {
+    if (err) throw err;
+    console.log("1 document updated");
+    res.json({ status: "ok", item: obj });
+  });
 });
 
 
