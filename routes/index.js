@@ -41,20 +41,32 @@ router.post('/update', function (req, res, next) {
     if (err) throw err;
     console.log("1 document updated");
   });
-
   res.json({status:"ok"})
-
 });
 
-/*router.get('/getAll', function (req, res, next) {
-  MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
-    if (err) throw err
-    var db = client.db(dbName)
-    db.collection('debts').find().toArray(function (err, data) {
-      if (err) throw err
-      res.send(JSON.stringify(data));
-    })
-  })
-});*/
+router.post('/save', function (req, res, next) {
+ var myquery = { title: "deudas" };
+ var obj = {
+  nombre : req.body.nombre,
+  deuda : req.body.deuda,
+  pagoMinimo : req.body.pago_min,
+  diaLimite : req.body.limit_day,
+  tipo : "deuda",
+  pagado : "no"
+ };
+ var newvalues = { $push: {"data.deudas": { 
+  nombre : req.body.nombre,
+  deuda : req.body.deuda,
+  pagoMinimo : req.body.pago_min,
+  diaLimite : req.body.limit_day,
+  tipo : "deuda",
+  pagado : "no" } } }
+ db.get().collection('debts').update(myquery,newvalues,function(err, resp) {
+  if (err) throw err;
+  console.log("1 document updated");
+  res.json({status:"ok", item: obj});
+ });
+});
+
 
 module.exports = router;
