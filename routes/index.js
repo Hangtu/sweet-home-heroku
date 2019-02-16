@@ -67,4 +67,21 @@ router.post('/save', function (req, res, next) {
 });
 
 
+router.post('/delete', function (req, res, next) {
+  var query = { title: "deudas" };
+  var removeValue = {
+    $pull: {
+      "data.deudas": {
+        nombre: req.body.nombre
+      }
+    }
+  }
+  console.log(removeValue);
+  db.get().collection('debts').updateOne(query, removeValue, function (err, resp) {
+    if (err) throw err;
+    console.log("1 document deleted");
+    res.json({ status: "ok" });
+  });
+});
+
 module.exports = router;
