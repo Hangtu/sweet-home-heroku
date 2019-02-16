@@ -15,7 +15,6 @@ router.post('/login', function (req, res) {
   if (user === 'hangtu' && pass === '1234') {
     res.json({ token: "1234" })
   }
-
   res.send(401)
 });
 
@@ -42,6 +41,33 @@ router.post('/update', function (req, res, next) {
     console.log("1 document updated");
   });
   res.json({ status: "ok" })
+});
+
+router.post('/updateContent', function (req, res, next) {
+  var newvalue = req.body.newItem;
+  var oldValue = req.body.oldItem;
+
+  var query = { title: "deudas", "data.deudas.nombre": oldValue.nombre };
+  var update = {
+    $set: {
+      "data.deudas.$.nombre": newvalue.nombre,
+      "data.deudas.$.deuda": newvalue.deuda,
+      "data.deudas.$.pagoMinimo": newvalue.pagoMinimo,
+      "data.deudas.$.diaLimite": newvalue.diaLimite
+    }
+  };
+
+   /*var update = { // replace all object
+    $set: {
+      "data.deudas.$": newvalue,
+    }
+  };*/
+
+  db.get().collection("debts").updateOne(query, update, function (err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+  });
+  res.json({ status: 'ok' })
 });
 
 router.post('/save', function (req, res, next) {
