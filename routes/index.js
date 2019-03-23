@@ -25,9 +25,10 @@ router.get('/get', function (req, res, next) {
   });
 });
 
-router.get('/findOne', function (req, res, next) {
+router.post('/findOne', function (req, res, next) {
+  const userID = req.body.userID;
   var collection = db.get().collection('debts');
-  var myquery = { title: "deudas" };
+  var myquery = { title: "deudas", userID: userID};
   collection.find(myquery).toArray(function (err, data) {
     res.send(JSON.stringify(data));
   });
@@ -57,11 +58,11 @@ router.post('/updateContent', function (req, res, next) {
     }
   };
 
-   /*var update = { // replace all object
-    $set: {
-      "data.deudas.$": newvalue,
-    }
-  };*/
+  /*var update = { // replace all object
+   $set: {
+     "data.deudas.$": newvalue,
+   }
+ };*/
 
   db.get().collection("debts").updateOne(query, update, function (err, res) {
     if (err) throw err;
