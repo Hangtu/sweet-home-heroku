@@ -35,7 +35,8 @@ router.post('/findOne', function (req, res, next) {
 });
 
 router.post('/update', function (req, res, next) {
-  var myquery = { title: "deudas" };
+  const userID = req.body.userID;
+  var myquery = { title: "deudas", userID: userID };
   var newvalues = { $set: { "data.deudas": req.body } };
   db.get().collection("debts").updateOne(myquery, newvalues, function (err, res) {
     if (err) throw err;
@@ -45,10 +46,11 @@ router.post('/update', function (req, res, next) {
 });
 
 router.post('/updateContent', function (req, res, next) {
+  const userID = req.body.userID;
   var newvalue = req.body.newItem;
   var oldValue = req.body.oldItem;
 
-  var query = { title: "deudas", "data.deudas.nombre": oldValue.nombre };
+  var query = { title: "deudas", "data.deudas.nombre": oldValue.nombre, userID: userID };
   var update = {
     $set: {
       "data.deudas.$.nombre": newvalue.nombre,
@@ -72,7 +74,8 @@ router.post('/updateContent', function (req, res, next) {
 });
 
 router.post('/save', function (req, res, next) {
-  var myquery = { title: "deudas" };
+  const userID = req.body.userID;
+  var myquery = { title: "deudas", userID: userID };
   var obj = {
     nombre: req.body.nombre,
     deuda: req.body.deuda,
@@ -95,7 +98,8 @@ router.post('/save', function (req, res, next) {
 
 
 router.post('/delete', function (req, res, next) {
-  var query = { title: "deudas" };
+  const userID = req.body.userID;
+  var query = { title: "deudas", userID: userID };
   var removeValue = {
     $pull: {
       "data.deudas": {
